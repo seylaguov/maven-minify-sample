@@ -1,7 +1,7 @@
 node ('master') {
 
 	environment {
-		JAVA_HOME	= '/devops_tools/java/jdk'
+		JAVA_HOME   = '/devops_tools/java/jdk'
 		JRE_HOME    = '/devops_tools/java/jre'
 	}
 
@@ -19,19 +19,19 @@ node ('master') {
 
 	withMaven(maven: 'M3') {
 
-		//stage('Build') {
-		//	sh 'mvn clean install -DskipITs=true -Dmaven.test.skip=true';
-		//}
+		stage('Build') {
+			sh 'mvn clean install -DskipITs=true -Dmaven.test.skip=true';
+		}
    
-        stage('SonarQube analysis') {
-          	withSonarQubeEnv('default') {
-                // requires SonarQube Scanner for Maven 3.2+
-                def (name, node) = "$JOB_NAME".tokenize( '/' )
-                sh "mvn clean verify sonar:sonar -Dsonar.projectName=$name -Dsonar.projectKey=$name -Dsonar.projectVersion=$BUILD_NUMBER";
-              	//sh "mvn sonar:sonar -Dsonar.host.url=http://10.2.2.31:9000 -Dsonar.login=a9085f7259e802b310095d3d4b6313042786782f -Dsonar.projectName=$name -Dsonar.projectKey=$name -Dsonar.projectVersion=$BUILD_NUMBER";
-            }
-        }
-    }
+		stage('SonarQube analysis') {
+			withSonarQubeEnv('default') {
+			// requires SonarQube Scanner for Maven 3.2+
+			def (name, node) = "$JOB_NAME".tokenize( '/' )
+			sh "mvn clean verify sonar:sonar -Dsonar.projectName=$name -Dsonar.projectKey=$name -Dsonar.projectVersion=$BUILD_NUMBER";
+			//sh "mvn sonar:sonar -Dsonar.host.url=http://10.2.2.31:9000 -Dsonar.login=a9085f7259e802b310095d3d4b6313042786782f -Dsonar.projectName=$name -Dsonar.projectKey=$name -Dsonar.projectVersion=$BUILD_NUMBER";
+			}
+		}
+	}
 }    
 
 // Pre-requisites:
